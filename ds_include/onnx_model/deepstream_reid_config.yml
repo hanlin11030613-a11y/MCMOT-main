@@ -1,0 +1,51 @@
+# DeepStream tracker ReID network config snippet for /home/lakshh/workspace/reid/impl_bot/bot_sort_ds_impl/ds_include/onnx_model/deepstream_reid_config.yml
+#
+# Model: OSNet x1.0, 256-d embedding, trained on Market1501 (Rank-1 94.21%, mAP 85.91%)
+#
+# The ONNX graph does NOT contain pixel normalization (no Sub/Div nodes) -
+# DeepStream must apply it via netScaleFactor/offsets below. This matches
+# how NVIDIA ships its own DeepStream ReID sample models.
+#
+# Drop this block into the `ReID:` section of your NvDCF/NvDeepSORT tracker
+# config (e.g. config_tracker_NvDeepSORT.yml). Exact key names/casing vary
+# slightly across DeepStream SDK versions - verify against the reference
+# tracker config shipped with your installed DeepStream version
+# (samples/configs/deepstream-app/config_tracker_*.yml).
+
+ReID:
+  reidType: 2                  # 1=feature template DB, 2=DCF+reID (verify against your DS version's enum)
+  batchSize: 100                # max batch = maxTargetsPerStream; matches --max-batch-size used at export
+  workspaceSize: 1000           # MB, for TensorRT engine build
+  reidFeatureSize: 256          # matches MODEL.HEADS.EMBEDDING_DIM
+  reidHistorySize: 100
+  inferDims: [3, 256, 128]      # C, H, W - matches INPUT.SIZE_TEST [256, 128]
+  networkMode: 2                # 0=FP32, 1=INT8, 2=FP16
+  onnxFile: /home/lakshh/workspace/reid/impl_bot/bot_sort_ds_impl/ds_include/onnx_model/deepstream_reid_config.yml
+  modelEngineFile: /home/lakshh/workspace/reid/impl_bot/bot_sort_ds_impl/ds_include/onnx_model/deepstream_reid_config.yml_b100_gpu0_fp16.engine
+  inputBlobName: input
+  outputBlobName: output
+  colorFormat: 0                 # 0=RGB (FastReID/OSNet trained on RGB, not BGR)
+  netScaleFactor: 0.01735207     # == 1 / mean(PIXEL_STD) == 1 / mean([58.395, 57.12, 57.375])
+  offsets: [123.675, 116.28, 103.53]   # == MODEL.PIXEL_MEAN (R, G, B order)
+  keepAspc: 0                    # FastReID preprocessing does a hard resize to 256x128, no aspect-ratio padding
+
+# --- Equivalent gst-nvinfer secondary-classifier style config (config_infer_*.txt) ---
+# [property]
+# onnx-file=/home/lakshh/workspace/reid/impl_bot/bot_sort_ds_impl/ds_include/onnx_model/deepstream_reid_config.yml
+# model-engine-file=/home/lakshh/workspace/reid/impl_bot/bot_sort_ds_impl/ds_include/onnx_model/deepstream_reid_config.yml_b100_gpu0_fp16.engine
+# infer-dims=3;256;128
+# net-scale-factor=0.01735207
+# offsets=123.675;116.28;103.53
+# model-color-format=0      # 0=RGB
+# batch-size=100
+# network-mode=2            # FP16
+# output-tensor-meta=1
+# input-tensor-from-meta=1  # if fed crops from tracker/SGIE pipeline
+
+# --- Build a TensorRT engine ahead of time with trtexec (dynamic batch profile) ---
+# trtexec --onnx=/home/lakshh/workspace/reid/impl_bot/bot_sort_ds_impl/ds_include/onnx_model/deepstream_reid_config.yml \
+#   --minShapes=input:1x3x256x128 \
+#   --optShapes=input:32x3x256x128 \
+#   --maxShapes=input:100x3x256x128 \
+#   --fp16 \
+#   --saveEngine=/home/lakshh/workspace/reid/impl_bot/bot_sort_ds_impl/ds_include/onnx_model/deepstream_reid_config.yml_b100_gpu0_fp16.engine

@@ -1,0 +1,44 @@
+property:
+  gpu-id: 0
+  net-scale-factor: 0.01735207357279195
+  offsets: 123.675;116.28;103.53
+  model-color-format: 0
+  onnx-file: /opt/nvidia/deepstream/deepstream/samples/models/reid/resnet50_market1501_aicity156.onnx
+  model-engine-file: /opt/nvidia/deepstream/deepstream/samples/models/reid/resnet50_market1501_aicity156.onnx_b50_gpu0_fp16.engine
+  infer-dims: 3;256;128
+  batch-size: 50
+  network-mode: 2
+  network-type: 100
+  interval: 0
+  process-mode: 2
+  # cluster-mode: 3
+  classifier-threshold: 0
+  output-tensor-meta: 1
+  maintain-aspect-ratio: 0
+  operate-on-class-ids: 0
+  scaling-compute-hw: 1
+  gie-unique-id: 2
+  
+
+
+# property:
+#   gpu-id: 0
+#   net-scale-factor: 0.01735207357279195
+#   offsets: 123.675;116.28;103.53
+#   model-color-format: 0
+#   onnx-file: /home/lakshh/workspace/reid/impl_bot/bot_sort_ds_impl/ds_include/onnx_model/osnet_x1_0_256_market1501.onnx
+#   model-engine-file: /home/lakshh/workspace/reid/impl_bot/bot_sort_ds_impl/ds_include/onnx_model/osnet_x1_0_256_market1501.onnx_b100_gpu0_fp16.engine
+#   infer-dims: 3;256;128
+#   batch-size: 100
+#   network-mode: 2
+#   network-type: 100
+#   interval: 0
+#   process-mode: 2
+#   # cluster-mode: 3
+#   classifier-threshold: 0
+#   output-tensor-meta: 1
+#   maintain-aspect-ratio: 0
+#   operate-on-class-ids: 0
+#   scaling-compute-hw: 1
+#   gie-unique-id: 2
+  

@@ -1,0 +1,30 @@
+property:
+  gpu-id: 0
+  net-scale-factor: 0.00392156
+
+  model-engine-file: /opt/nvidia/deepstream/deepstream/samples/models/BodyPose3DNet/bodypose3dnet_performance.onnx_b8_gpu0_fp16.engine
+  onnx-file: /opt/nvidia/deepstream/deepstream/samples/models/BodyPose3DNet/bodypose3dnet_performance.onnx
+  infer-dims: 3;256;192
+  batch-size: 8
+  network-mode: 2
+  network-type: 100
+  num-detected-classes: 1
+  interval: 0
+  gie-unique-id: 2
+  output-blob-names: pose2d;pose2d_org_img;pose25d;pose3d
+  classifier-threshold: 0.7
+  operate-on-class-ids: 0
+  ## Integer 0:NCHW 1:NHWC
+  network-input-order: 0
+  # Enable tensor metadata output
+  output-tensor-meta: 1
+  ## 1-Primary  2-Secondary
+  process-mode: 2
+  ## 0: RGB 1: BGR 2: GRAY
+  model-color-format: 1
+  maintain-aspect-ratio: 0
+  symmetric-padding: 0
+  scaling-filter: 1
+  custom-lib-path: /home/lakshh/workspace/deepstream_reference_apps/deepstream-bodypose-3d/sources/nvdsinfer_custom_impl_BodyPose3DNet/libnvdsinfer_custom_impl_BodyPose3DNet.so
+
+  

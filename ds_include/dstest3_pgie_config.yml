@@ -1,0 +1,28 @@
+property:
+  gpu-id: 0
+  net-scale-factor: 0.00392156862745098
+  onnx-file: /opt/nvidia/deepstream/deepstream/samples/models/peoplenet/resnet34_peoplenet_int8.onnx
+  model-engine-file: /opt/nvidia/deepstream/deepstream/samples/models/peoplenet/resnet34_peoplenet_int8.onnx_b2_gpu0_int8.engine
+  labelfile-path: /opt/nvidia/deepstream/deepstream/samples/models/peoplenet/labels.txt
+  int8-calib-file: /opt/nvidia/deepstream/deepstream/samples/models/peoplenet/resnet34_peoplenet_int8.txt
+  uff-input-blob-name: input_1
+  batch-size: 2
+  process-mode: 1
+  cluster-mode: 2
+  interval: 0
+  gie-unique-id: 1
+  offsets: 0.0;0.0;0.0
+  infer-dims: 3;544;960
+  tlt-model-key: tlt_encode
+  network-type: 0
+  num-detected-classes: 3
+  model-color-format: 0
+  maintain-aspect-ratio: 0
+  output-tensor-meta: 0
+  filter-out-class-ids: 1;2
+  network-mode: 2
+
+class-attrs-all:
+  topk: 200
+  nms-iou-threshold: 0.5
+  pre-cluster-threshold: 0.2    

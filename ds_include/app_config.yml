@@ -1,0 +1,42 @@
+source-list:
+  # list: file:///home/lakshh/Downloads/output_h264_trim.mp4;
+  # list: rtsp://root:root@192.168.6.91/cam1/h264;
+  # list: rtsp://admin:123456@192.168.3.123/stream0;
+  # list: v4l2:///dev/video0
+  # list: file:///home/lakshh/Desktop/camera1_trim_20260525_154131.mp4;file:///home/lakshh/Desktop/camera2_20260525_154131.mp4;
+  list: file:///home/lakshh/Downloads/camera_2_2023-12-05-12_12_13.avi;
+
+streammux:
+  batch-size: 1
+  width: 1920
+  height: 1080
+
+tiler:
+  width: 1920
+  # width: 1792
+  # width: 960
+  height: 540
+
+sink:
+  qos: 0
+
+primary-gie:  
+  plugin-type: 0  
+  config-file-path: /home/lakshh/workspace/reid/impl_bot/bot_sort_ds_impl/ds_include/dstest3_pgie_config.yml
+
+secondary-gie-1:
+  plugin-type: 0
+  config-file-path: /home/lakshh/workspace/reid/impl_bot/bot_sort_ds_impl/ds_include/sgie_config.yml
+
+# tracker:
+#   enable: 0
+#   tracker-width: 960
+#   tracker-height: 544
+#   gpu-id: 0
+#   display-tracking-id: 0
+#   ll-lib-file: /opt/nvidia/deepstream/deepstream/lib/libnvds_nvmultiobjecttracker.so
+#   ll-config-file: /opt/nvidia/deepstream/deepstream/samples/configs/deepstream-app/config_tracker_NvDCF_max_perf.yml
+
+osd:
+  process-mode: 0
+  display-text: 0
