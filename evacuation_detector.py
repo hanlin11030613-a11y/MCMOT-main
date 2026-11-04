@@ -21,7 +21,13 @@ class EvacuationDetector:
         trigger_ratio: float = 0.6,           # 視窗內觸發比例門檻
     ):
         self.H = homography_matrix
-        self.H_inv = np.linalg.inv(homography_matrix) if homography_matrix is not None else None
+        if homography_matrix is not None:
+            try:
+                self.H_inv = np.linalg.inv(homography_matrix)
+            except np.linalg.LinAlgError:
+                self.H_inv = np.linalg.pinv(homography_matrix)
+        else:
+            self.H_inv = None
         self.min_crowd_size = min_crowd_size
         self.speed_thresh = speed_thresh
         self.parallel_thresh = parallel_thresh
@@ -76,8 +82,9 @@ class EvacuationDetector:
             return (ground_pos[0] - px) / dt, (ground_pos[1] - py) / dt
 
         # 若無歷史且無 H 矩陣，嘗試讀取 Kalman Filter 的內部速度
-        if self.H is None and track.mean is not None and len(track.mean) >= 6:
-            vx, vy = track.mean[4], track.mean[5]
+        mean = getattr(track, 'mean', None)
+        if self.H is None and mean is not None and len(mean) >= 6:
+            vx, vy = mean[4], mean[5]
             if not (np.isnan(vx) or np.isnan(vy)):
                 return float(vx), float(vy)
 
